@@ -1866,7 +1866,7 @@ const HomePage = ({ setCurrentPage, theme }) => {
                     We're the service that gives you a driver for your own car or your journey.
                   </p>
                   <p className="card-text">
-                    Need a safe driver after drinks, someone to take you out of town, a family driver, a driver for events and other occasions, or even a driver who doubles as a guide while visiting Rwanda?
+                    Need a safe driver after drinks, someone to take you out of town, a family driver, a driver for events and other occasions, or even a driver who doubles as a guide while visiting Uganda?
                   </p>
                   <p className="card-text">
                     That's exactly what we do.
