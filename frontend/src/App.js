@@ -1103,8 +1103,8 @@ const App = () => {
           <div className="container">
             <div className="row">
               <div className="col-md-6 mb-4 mb-md-0">
-                <h5><i className="bi bi-car-front-fill me-2"></i>RIDA</h5>
-                <p>Your reliable ride booking service.</p>
+                <h5><i className="bi bi-car-front-fill me-2"></i>RIDA UGANDA</h5>
+                <p>Your Trusted Driver. Anytime You Need One.</p>
               </div>
               <div className="col-md-3 mb-4 mb-md-0">
                 <h5>Quick Links</h5>
@@ -1117,12 +1117,12 @@ const App = () => {
               <div className="col-md-3">
                 <h5>Contact Us</h5>
                 <p><i className="bi bi-envelope me-2"></i> helpline@ridaapp.com</p>
-                <p><i className="bi bi-telephone me-2"></i> +(250) 789543687</p>
+                <p><i className="bi bi-telephone me-2"></i> +256 770 493458</p>
               </div>
             </div>
             <hr className="bg-white bg-opacity-25" />
             <div className="text-center">
-              <p className="mb-0">&copy; {new Date().getFullYear()} RIDA. All rights reserved.</p>
+              <p className="mb-0">&copy; {new Date().getFullYear()} RIDA Uganda. All rights reserved.</p>
             </div>
           </div>
         </motion.footer>
@@ -1803,7 +1803,7 @@ const HomePage = ({ setCurrentPage, theme }) => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            Welcome to RIDA
+            Your Trusted Driver. Anytime You Need One.
           </motion.h1>
           <motion.p 
             className="lead mb-3"
@@ -1811,7 +1811,7 @@ const HomePage = ({ setCurrentPage, theme }) => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            Your Car. Our Driver. Your Comfort & Safety.
+            Safe. Professional. Reliable. <br/> Book a vetted driver in Kampala in minutes.
           </motion.p>
           <motion.p
             className="mb-4"
@@ -1847,7 +1847,7 @@ const HomePage = ({ setCurrentPage, theme }) => {
               }}
               whileTap={{ scale: 0.95 }}
             >
-              <i className="bi bi-box-arrow-in-right me-2"></i> Login
+              <i className="bi bi-box-arrow-in-right me-2"></i> Call or Whatsapp us
             </motion.button>
           </motion.div>
         </motion.div>
@@ -1866,7 +1866,7 @@ const HomePage = ({ setCurrentPage, theme }) => {
                     We're the service that gives you a driver for your own car or your journey.
                   </p>
                   <p className="card-text">
-                    Need a safe driver after drinks, someone to take you out of town, a family driver, a driver for events and other occasions, or even a driver who doubles as a guide while visiting Uganda?
+                    Need a safe driver after drinks, someone to take you out of town, a family driver, a driver for events and other occasions, or even a driver who doubles as a guide while visiting Rwanda?
                   </p>
                   <p className="card-text">
                     That's exactly what we do.
@@ -1956,7 +1956,7 @@ const HomePage = ({ setCurrentPage, theme }) => {
                     <i className="bi bi-geo-alt-fill fs-1"></i>
                   </motion.div>
                   <h4 className="card-title">Long Distance</h4>
-                  <p className="card-text">Traveling outside Kigali? Our experienced drivers ensure safe, comfortable journeys at fair, distance-based rates.</p>
+                  <p className="card-text">Traveling outside Kampala? Our experienced drivers ensure safe, comfortable journeys at fair, distance-based rates.</p>
                 </motion.div>
               </AnimatedCard>
             </div>
@@ -2025,30 +2025,24 @@ const HomePage = ({ setCurrentPage, theme }) => {
                 { 
                   icon: 'bi-person-plus', 
                   title: 'Sign Up', 
-                  description: 'Create an account or log in to your existing account.',
+                  description: 'Create an account or log in to your existing account or even call us or Whatssapp us.',
                   color: 'primary'
                 },
                 { 
-                  icon: 'bi-funnel', 
-                  title: 'Filter Drivers', 
-                  description: 'Use our advanced filtering system to find drivers that match your specific requirements.',
+                  icon: 'bi-map', 
+                  title: 'Share Details', 
+                  description: 'Tell us your location and time.',
                   color: 'info'
                 },
                 { 
-                  icon: 'bi-calendar-check', 
-                  title: 'Book Driver', 
-                  description: 'Select your preferred driver and provide trip details including pickup location, time, and destination.',
+                  icon: 'bi-check', 
+                  title: 'Get Matched', 
+                  description: 'We assign a vetted driver.',
                   color: 'success'
                 },
                 { 
-                  icon: 'bi-car-front', 
-                  title: 'Enjoy Ride', 
-                  description: 'Your professional driver will arrive at the scheduled time and get you to your destination safely.',
-                  color: 'warning'
-                },
-                { 
                   icon: 'bi-cash-coin', 
-                  title: 'Pay & Rate', 
+                  title: 'Pay & Go', 
                   description: 'Pay the calculated fare and rate your experience to help us improve our service.',
                   color: 'danger'
                 }
@@ -2111,34 +2105,34 @@ const HomePage = ({ setCurrentPage, theme }) => {
       {/* 5. Why Choose Our Drivers Section */}
       <div className="row mb-5">
         <div className="col-12">
-          <h2 className="text-center mb-4">Why Choose Our Drivers</h2>
+          <h2 className="text-center mb-4">Why RIDA?</h2>
           <div className="row g-4">
             {[
               {
                 icon: 'bi-shield-check',
                 title: 'Verified Professionals',
-                description: 'All our drivers undergo thorough background checks and vehicle inspections to ensure your safety.',
+                description: 'Hiring a driver in Uganda should not feel risky.',
                 color: 'primary',
                 delay: 0.1
               },
               {
                 icon: 'bi-currency-dollar',
-                title: 'Transparent Pricing',
-                description: 'Competitive pricing with no hidden fees. Know exactly what you\'ll pay before booking.',
+                title: 'Clear Verification',
+                description: 'Verified identity and background checks.',
                 color: 'success',
                 delay: 0.3
               },
               {
                 icon: 'bi-clock-history',
                 title: '24/7 Availability',
-                description: 'Our service is available round the clock. Book a ride anytime, anywhere with our easy-to-use platform.',
+                description: 'Reliable and punctual service.',
                 color: 'info',
                 delay: 0.5
               },
               {
                 icon: 'bi-person-badge',
                 title: 'Experienced Drivers',
-                description: 'Professional, courteous drivers who prioritize your comfort and punctuality.',
+                description: 'Professional conduct and confidentiality.',
                 color: 'warning',
                 delay: 0.7
               }
@@ -2164,6 +2158,7 @@ const HomePage = ({ setCurrentPage, theme }) => {
                     <p className="card-text">{feature.description}</p>
                   </motion.div>
                 </AnimatedCard>
+                
               </div>
             ))}
           </div>
@@ -2172,8 +2167,8 @@ const HomePage = ({ setCurrentPage, theme }) => {
       
       {/* 6. Book Your Driver Now Section */}
       <div className="text-center py-5 mb-5">
-        <h2 className="mb-4">Ready to Experience the Best Ride Service?</h2>
-        <p className="lead mb-4">Join thousands of satisfied customers who have made RIDA their preferred transportation partner.</p>
+        <h2 className="mb-4">Ready to Book?</h2>
+        <p className="lead mb-4">Stop relying on random referrals. Choose a structured, trusted driver service.</p>
         <div className="d-flex flex-column flex-sm-row justify-content-center gap-3">
           <motion.button 
             className="btn btn-primary btn-lg fw-semibold px-4"
@@ -2261,7 +2256,7 @@ const HomePage = ({ setCurrentPage, theme }) => {
                     <span className="text-muted">5.0</span>
                   </div>
                   <p className="card-text">
-                    "We used the service for a family trip outside Kigali. The driver was professional and the pricing was so clear."
+                    "We used the service for a family trip outside Kampala. The driver was professional and the pricing was so clear."
                   </p>
                   <div className="d-flex align-items-center">
                     <div className="bg-success rounded-circle d-flex align-items-center justify-content-center me-3" style={{width: '40px', height: '40px'}}>
@@ -2742,7 +2737,7 @@ const CustomerDashboard = ({ user, token, showMessage, setCurrentPage, theme }) 
         driverId: selectedDriver._id,
         pickupLocation: {
           type: 'Point',
-          coordinates: [-1.9441, 30.0619], // Default coordinates for Kigali
+          coordinates: [-1.9441, 30.0619], 
           address: bookingData.pickupAddress
         },
         bookingType: 'once', // Default to one-time booking
@@ -2984,8 +2979,8 @@ const CustomerDashboard = ({ user, token, showMessage, setCurrentPage, theme }) 
                   style={{ backgroundColor: colors.background, color: colors.text, border: `1px solid ${colors.border}` }}
                 >
                   <option value="">Any Area</option>
-                  <option value="kigali">Kigali</option>
-                  <option value="outsideKigali">Outside Kigali</option>
+                  <option value="kampala">Kampala</option>
+                  <option value="outsideKampala">Outside Kampala</option>
                   <option value="nationwide">Nationwide</option>
                 </select>
               </div>
@@ -3034,7 +3029,6 @@ const CustomerDashboard = ({ user, token, showMessage, setCurrentPage, theme }) 
                 >
                   <option value="">Any Language</option>
                   <option value="english">English</option>
-                   <option value="swahili">Swahili</option>
                   <option value="french">French</option>
                 </select>
               </div>
@@ -3296,7 +3290,6 @@ const CustomerDashboard = ({ user, token, showMessage, setCurrentPage, theme }) 
                       style={{ backgroundColor: colors.background, color: colors.text, border: `1px solid ${colors.border}` }}
                     >
                       <option value="english">English</option>
-                      <option value="Swahili">Swahili</option>
                       <option value="french">French</option>
                     </select>
                   </div>
@@ -3311,7 +3304,7 @@ const CustomerDashboard = ({ user, token, showMessage, setCurrentPage, theme }) 
                       readOnly
                       style={{ backgroundColor: colors.background, color: colors.text, border: `1px solid ${colors.border}` }}
                     />
-                    <small className="text-muted">Payment method is fixed to MomoPay Code 123456</small>
+                    <small className="text-muted">Payment method is fixed to MomoPay Code with Flutterwave</small>
                   </div>
                 </form>
               </div>
@@ -4093,10 +4086,10 @@ const Register = ({ onRegisterSuccess, showMessage, theme }) => {
     yearsOfExperience: '',
     transmissionProficiency: 'both',
     vehicleTypesComfortable: [],
-    preferredServiceAreas: ['kigali'],
+    preferredServiceAreas: ['kampala'],
     timeAvailability: 'flexible',
     openToServices: ['shortTrips'],
-    languagesSpoken: ['english', 'Swahili']
+    languagesSpoken: ['english']
   });
   const [loading, setLoading] = useState(false);
   
@@ -4463,7 +4456,7 @@ const Register = ({ onRegisterSuccess, showMessage, theme }) => {
             <div className="form-group mt-3">
               <label className="form-label fw-semibold">Preferred Service Areas</label>
               <div className="row g-2">
-                {['kigali', 'outsideKigali', 'nationwide'].map(area => (
+                {['kampala', 'outsideKampala', 'nationwide'].map(area => (
                   <div key={area} className="col-md-4">
                     <div className="form-check">
                       <input
@@ -4474,9 +4467,6 @@ const Register = ({ onRegisterSuccess, showMessage, theme }) => {
                         checked={formData.preferredServiceAreas.includes(area)}
                         onChange={(e) => handleArrayChange(e, 'preferredServiceAreas')}
                       />
-                      <label className="form-check-label" htmlFor={`area-${area}`}>
-                        {area === 'kigali' ? 'Kigali' : area === 'outsideKigali' ? 'Outside Kigali' : 'Nationwide'}
-                      </label>
                     </div>
                   </div>
                 ))}
@@ -4513,7 +4503,7 @@ const Register = ({ onRegisterSuccess, showMessage, theme }) => {
             <div className="form-group mt-3">
               <label className="form-label fw-semibold">Languages Spoken</label>
               <div className="row g-2">
-                {['english', 'swahili', 'french'].map(lang => (
+                {['english', 'french'].map(lang => (
                   <div key={lang} className="col-md-4">
                     <div className="form-check">
                       <input
