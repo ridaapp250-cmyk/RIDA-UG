@@ -1,5 +1,6 @@
 {
   "name": "driver-booking-platform",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
