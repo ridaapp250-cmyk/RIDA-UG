@@ -4157,7 +4157,7 @@ const Register = ({ onRegisterSuccess, showMessage, theme }) => {
           >
             <option value="customer">Customer</option>
             <option value="driver">Driver</option>
-            <option value="admin">Admin</option>
+            
           </select>
         </div>
         
