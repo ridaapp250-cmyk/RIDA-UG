@@ -1840,14 +1840,14 @@ const HomePage = ({ setCurrentPage, theme }) => {
             </motion.button>
             <motion.button 
               className="btn btn-outline-light btn-lg fw-semibold px-4"
-              onClick={() => setCurrentPage('login')}
+              
               whileHover={{ 
                 scale: 1.05,
                 boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)"
               }}
               whileTap={{ scale: 0.95 }}
             >
-              <i className="bi bi-box-arrow-in-right me-2"></i> Call or Whatsapp us
+              <i className="bi bi-box-arrow-in-right me-2"></i> Call or Whatsapp us at 0770493458
             </motion.button>
           </motion.div>
         </motion.div>
