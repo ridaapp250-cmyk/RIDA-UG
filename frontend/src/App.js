@@ -1863,7 +1863,7 @@ const HomePage = ({ setCurrentPage, theme }) => {
                 <div className="col-md-6 mb-4 mb-md-0">
                   <h3 className="card-title">We're not another ride service.</h3>
                   <p className="card-text">
-                    We're the service that gives you a driver for your own car or your journey.
+                    We're the service that gives you a driver for your own car or your journey. Founded and brought to you by  Ainembabazi Godwin
                   </p>
                   <p className="card-text">
                     Need a safe driver after drinks, someone to take you out of town, a family driver, a driver for events and other occasions, or even a driver who doubles as a guide while visiting Uganda and Kampala?
