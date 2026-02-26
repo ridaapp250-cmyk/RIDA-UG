@@ -2192,9 +2192,10 @@ const HomePage = ({ setCurrentPage, theme }) => {
           >
             <i className="bi bi-box-arrow-in-right me-2"></i> Sign In
           </motion.button>
-        </div>
-      </div>
-      
+          </div>
+    </div>
+  );
+}
      
 // Review Modal Component
 const ReviewModal = ({ show, onClose, booking, user, token, showMessage }) => {
