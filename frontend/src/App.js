@@ -564,124 +564,204 @@ const DriverCard = ({ driver, onBook, isBooking, theme }) => {
 
 // Driver Tracking Map Component (Placeholder)
 const DriverTrackingMap = ({ booking, theme }) => {
-  const colors = themeColors[theme];
-  
+  const colors = themeColors?.[theme] || {
+    primary: "#0d6efd"
+  };
+
   return (
-    <motion.div 
-      className="card border-0 shadow-sm mb-4 overflow-hidden"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      style={{ backgroundColor: colors.cardBg, border: `1px solid ${colors.border}` }}
+    <motion.div
+      className="position-relative bg-light rounded p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
     >
-      <div className="card-header bg-transparent py-3">
-        <h5 className="mb-0">Driver Tracking</h5>
-      </div>
-      <div className="card-body p-0">
-        <div className="position-relative" style={{ height: '300px', backgroundColor: colors.background }}>
-          {/* Map placeholder */}
-          <div className="d-flex justify-content-center align-items-center h-100">
+      <div className="d-flex justify-content-center align-items-center h-100">
+        <div className="text-center">
+          <i className="bi bi-geo-alt fs-1 text-primary mb-3"></i>
+          <p className="text-muted">
+            Live tracking will appear here when your trip is active
+          </p>
+
+          <div className="d-flex justify-content-center gap-4 mt-4">
             <div className="text-center">
-              <i className="bi bi-geo-alt fs-1 text-primary mb-3"></i>
-              <p className="text-muted">Live tracking will appear here when your trip is active</p>
-              <div className="d-flex justify-content-center gap-4 mt-4">
-                <div className="text-center">
-                  <div className="rounded-circle bg-primary p-3 mb-2">
-                    <i className="bi bi-person-fill text-white"></i>
-                  </div>
-                  <p className="small mb-0">You</p>
-                </div>
-                <div className="text-center">
-                  <div className="rounded-circle bg-success p-3 mb-2">
-                    <i className="bi bi-car-front-fill text-white"></i>
-                  </div>
-                  <p className="small mb-0">Driver</p>
-                </div>
+              <div className="rounded-circle bg-primary p-3 mb-2">
+                <i className="bi bi-person-fill text-white"></i>
               </div>
+              <p className="small mb-0">You</p>
+            </div>
+
+            <div className="text-center">
+              <div className="rounded-circle bg-success p-3 mb-2">
+                <i className="bi bi-car-front-fill text-white"></i>
+              </div>
+              <p className="small mb-0">Driver</p>
             </div>
           </div>
-          
-          {/* Mock route line */}
-          <svg className="position-absolute top-0 start-0 w-100 h-100" style={{ zIndex: 1 }}>
-            <path 
-              d="M 100,150 Q 250,50 400,150" 
-              stroke={colors.primary} 
-              strokeWidth="3" 
-              fill="none" 
-              strokeDasharray="10,5"
-            />
-          </svg>
         </div>
       </div>
+
+      {/* Mock route line */}
+      <svg
+        className="position-absolute top-0 start-0 w-100 h-100"
+        style={{ zIndex: 1 }}
+      >
+        <path
+          d="M 100,150 Q 250,50 400,150"
+          stroke={colors.primary}
+          strokeWidth="3"
+          fill="none"
+          strokeDasharray="10,5"
+        />
+      </svg>
     </motion.div>
   );
 };
 
 // Driver Price Calculator Component - Updated with new calculation logic
-const DriverPriceCalculator = ({ theme }) => {
-  const colors = themeColors[theme];
-  const [days, setDays] = useState('');
-  const [price, setPrice] = useState(null);
-  
-  const calculatePrice = () => {
-    const daysValue = parseInt(days);
-    
-    if (isNaN(daysValue) || daysValue < 1) {
-      setPrice("Please enter a valid number of days.");
+
+const DriverPriceCalculator = ({ setCurrentPage }) => {
+  const [service, setService] = useState("");
+  const [value, setValue] = useState("");
+  const [total, setTotal] = useState(null);
+  const [error, setError] = useState("");
+
+  const serviceRates = {
+    tourist: { rate: 12000, type: "hour" },
+    night_hourly: { rate: 8000, type: "hour" },
+    night_distance: { rate: 1500, type: "km" },
+    corporate_standard: { rate: 7000, type: "hour" },
+    corporate_premium: { rate: 10000, type: "hour" },
+    event: { rate: 10000, type: "hour" },
+  };
+
+  const calculateTotal = () => {
+    if (!service) {
+      setError("Please select a service package.");
+      setTotal(null);
       return;
     }
-    
-    let calculatedPrice = 0;
-    if (daysValue === 1) {
-      calculatedPrice = 15000;
-    } else {
-      calculatedPrice = daysValue * 10000;
+
+    const numericValue = parseInt(value);
+
+    if (isNaN(numericValue) || numericValue <= 0) {
+      setError("Please enter a valid number.");
+      setTotal(null);
+      return;
     }
-    
-    setPrice(`Total Price: ${calculatedPrice.toLocaleString()} RWF`);
+
+    setError("");
+    const rate = serviceRates[service].rate;
+    setTotal(numericValue * rate);
   };
-  
+
+  const selectedService = serviceRates[service];
+
   return (
-    <motion.div 
-      className="card border-0 shadow-sm mb-4"
-      style={{ backgroundColor: colors.cardBg, border: `1px solid ${colors.border}` }}
-      initial={{ opacity: 0, height: 0 }}
-      animate={{ opacity: 1, height: 'auto' }}
-      exit={{ opacity: 0, height: 0 }}
+    <motion.div
+      className="container py-5"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
     >
-      <div className="card-body p-3 p-md-4">
-        <h3 className="h5 mb-3 text-center" style={{ color: colors.primary }}>Driver Price Calculator</h3>
-        <div className="row justify-content-center">
-          <div className="col-md-8">
+      <div className="row justify-content-center">
+        <div className="col-lg-7">
+          <div className="card shadow-sm p-4">
+            <h2 className="text-center mb-3">Book Your Driver</h2>
+            <p className="text-muted text-center">
+              Select your service package and calculate your total cost instantly.
+            </p>
+
+            {/* Service Selection */}
             <div className="mb-3">
-              <label className="form-label fw-semibold">Enter number of days:</label>
-              <input
-                type="number"
-                className="form-control"
-                id="days"
-                min="1"
-                placeholder="e.g. 3"
-                value={days}
-                onChange={(e) => setDays(e.target.value)}
-                style={{ backgroundColor: colors.background, color: colors.text, border: `1px solid ${colors.border}` }}
-              />
+              <label className="form-label fw-bold">
+                Choose Service Package
+              </label>
+              <select
+                className="form-select"
+                value={service}
+                onChange={(e) => {
+                  setService(e.target.value);
+                  setValue("");
+                  setTotal(null);
+                }}
+              >
+                <option value="">-- Select Package --</option>
+                <option value="tourist">
+                  Tourist & Diaspora – 12,000 UGX per hour
+                </option>
+                <option value="night_hourly">
+                  Night-Out (Hourly) – 8,000 UGX per hour
+                </option>
+                <option value="night_distance">
+                  Night-Out (Distance) – 1,500 UGX per km
+                </option>
+                <option value="corporate_standard">
+                  Corporate Standard – 7,000 UGX per hour
+                </option>
+                <option value="corporate_premium">
+                  Corporate Premium – 10,000 UGX per hour
+                </option>
+                <option value="event">
+                  Events – 10,000 UGX per hour
+                </option>
+              </select>
             </div>
-            <motion.button 
-              className="btn w-100 py-2 fw-semibold rounded-3 shadow-sm"
-              style={{ backgroundColor: colors.primary, color: '#fff' }}
-              onClick={calculatePrice}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              Calculate
-            </motion.button>
-            {price && (
-              <div className="mt-3 text-center">
-                <div className="result fw-bold" style={{ color: colors.text, fontSize: '1.1rem' }}>
-                  {price}
-                </div>
+
+            {/* Dynamic Input */}
+            {service && (
+              <div className="mb-3">
+                <label className="form-label fw-bold">
+                  {selectedService?.type === "km"
+                    ? "Enter Distance (Kilometers)"
+                    : "Enter Number of Hours"}
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  placeholder={
+                    selectedService?.type === "km"
+                      ? "e.g. 10"
+                      : "e.g. 5"
+                  }
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                />
               </div>
             )}
+
+            {/* Error */}
+            {error && (
+              <div className="alert alert-danger">{error}</div>
+            )}
+
+            {/* Total Result */}
+            {total !== null && (
+              <div className="alert alert-success fs-5 fw-bold">
+                Total Cost: {total.toLocaleString()} UGX
+              </div>
+            )}
+
+            {/* Buttons */}
+            <div className="d-grid gap-2 mt-3">
+              <button
+                className="btn btn-success"
+                onClick={calculateTotal}
+              >
+                Calculate Total
+              </button>
+
+              <button
+                className="btn btn-primary"
+                onClick={() => alert("Proceed to confirmation & payment process.")}
+              >
+                Confirm Booking
+              </button>
+
+              <button
+                className="btn btn-outline-secondary"
+                onClick={() => setCurrentPage("customerDashboard")}
+              >
+                Back to Dashboard
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -690,131 +770,156 @@ const DriverPriceCalculator = ({ theme }) => {
 };
 
 // Fare Calculator Page Component - Updated with new calculation logic
-const FareCalculatorPage = ({ user, token, showMessage, setCurrentPage, theme }) => {
-  const colors = themeColors[theme];
-  const [days, setDays] = useState('');
-  const [fare, setFare] = useState(null);
-  const [error, setError] = useState('');
-  
-  const calculateFare = () => {
-    const daysValue = parseInt(days);
-    
-    if (isNaN(daysValue) || daysValue < 1) {
-      setError('Please enter a valid number of days.');
-      setFare(null);
+  const FareCalculatorPage = ({ setCurrentPage }) => {
+  const [service, setService] = useState("");
+  const [value, setValue] = useState("");
+  const [total, setTotal] = useState(null);
+  const [error, setError] = useState("");
+
+  const serviceRates = {
+    tourist: { rate: 12000, type: "hour" },
+    night_hourly: { rate: 8000, type: "hour" },
+    night_distance: { rate: 1500, type: "km" },
+    corporate_standard: { rate: 7000, type: "hour" },
+    corporate_premium: { rate: 10000, type: "hour" },
+    event: { rate: 10000, type: "hour" },
+  };
+
+  const calculateTotal = () => {
+    if (!service) {
+      setError("Please select a service package.");
+      setTotal(null);
       return;
     }
-    
-    setError('');
-    
-    let calculatedFare = 0;
-    if (daysValue === 1) {
-      calculatedFare = 15000;
-    } else {
-      calculatedFare = daysValue * 10000;
+
+    const numericValue = parseInt(value);
+
+    if (isNaN(numericValue) || numericValue <= 0) {
+      setError("Please enter a valid number.");
+      setTotal(null);
+      return;
     }
-    
-    setFare(calculatedFare);
+
+    setError("");
+    const rate = serviceRates[service].rate;
+    setTotal(numericValue * rate);
   };
-  
+
+  const selectedService = serviceRates[service];
+
   return (
     <motion.div
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      variants={pageTransition}
-      className="container py-4 py-md-5"
+      className="container py-5"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
     >
       <div className="row justify-content-center">
-        <div className="col-12 col-md-10 col-lg-8 col-xl-6">
-          <motion.div 
-            className="card shadow-sm overflow-hidden"
-            style={{ backgroundColor: colors.cardBg, border: `1px solid ${colors.border}` }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="card-body p-3 p-md-4">
-              <h2 className="card-title text-center mb-3 mb-md-4">RIDA Fare Calculator</h2>
-              <p className="text-muted text-center mb-3 mb-md-4">
-                Calculate your fare based on number of days needed
-              </p>
-              
-              <div className="mb-4">
-                <label htmlFor="daysInput" className="form-label fw-semibold">Number of Days</label>
-                <div className="input-group">
-                  <input
-                    type="number"
-                    className="form-control form-control-lg"
-                    id="daysInput"
-                    placeholder="Enter number of days"
-                    value={days}
-                    onChange={(e) => setDays(e.target.value)}
-                    style={{ backgroundColor: colors.background, color: colors.text, border: `1px solid ${colors.border}` }}
-                  />
-                  <motion.button 
-                    className="btn btn-primary btn-lg"
-                    type="button"
-                    onClick={calculateFare}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Calculate
-                  </motion.button>
-                </div>
-              </div>
-              
-              {error && (
-                <motion.div 
-                  className="alert alert-danger mt-3" 
-                  role="alert"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                >
-                  {error}
-                </motion.div>
-              )}
-              
-              {fare !== null && (
-                <motion.div 
-                  className="alert alert-success mt-3" 
-                  role="alert"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                >
-                  <h5 className="alert-heading">Estimated Fare</h5>
-                  <p className="mb-0 fs-4 fs-md-5 fw-bold">{fare.toLocaleString()} RWF</p>
-                </motion.div>
-              )}
-              
-              <div className="mt-4 p-3 rounded-3" style={{ backgroundColor: theme === 'dark' ? '#2d2d2d' : '#f8f9fa' }}>
-                <h6 className="fw-semibold">Fare Structure:</h6>
-                <ul className="mb-0">
-                  <li>1 day: 15,000 RWF (flat rate)</li>
-                  <li>More than 1 day: 10,000 RWF per day</li>
-                </ul>
-              </div>
-              
-              <div className="d-grid mt-4">
-                <motion.button 
-                  className="btn btn-success btn-lg"
-                  onClick={() => setCurrentPage('customerDashboard')}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                >
-                  <i className="bi bi-calendar-check me-2"></i> Book a Driver Now
-                </motion.button>
-              </div>
+        <div className="col-lg-7">
+          <div className="card shadow-sm p-4">
+            <h2 className="text-center mb-3">Book Your Driver</h2>
+            <p className="text-muted text-center">
+              Select your service package and calculate your total cost instantly.
+            </p>
+
+            {/* Service Selection */}
+            <div className="mb-3">
+              <label className="form-label fw-bold">
+                Choose Service Package
+              </label>
+              <select
+                className="form-select"
+                value={service}
+                onChange={(e) => {
+                  setService(e.target.value);
+                  setValue("");
+                  setTotal(null);
+                }}
+              >
+                <option value="">-- Select Package --</option>
+                <option value="tourist">
+                  Tourist & Diaspora – 12,000 UGX per hour
+                </option>
+                <option value="night_hourly">
+                  Night-Out (Hourly) – 8,000 UGX per hour
+                </option>
+                <option value="night_distance">
+                  Night-Out (Distance) – 1,500 UGX per km
+                </option>
+                <option value="corporate_standard">
+                  Corporate Standard – 7,000 UGX per hour
+                </option>
+                <option value="corporate_premium">
+                  Corporate Premium – 10,000 UGX per hour
+                </option>
+                <option value="event">
+                  Events – 10,000 UGX per hour
+                </option>
+              </select>
             </div>
-          </motion.div>
+
+            {/* Dynamic Input */}
+            {service && (
+              <div className="mb-3">
+                <label className="form-label fw-bold">
+                  {selectedService?.type === "km"
+                    ? "Enter Distance (Kilometers)"
+                    : "Enter Number of Hours"}
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  placeholder={
+                    selectedService?.type === "km"
+                      ? "e.g. 10"
+                      : "e.g. 5"
+                  }
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                />
+              </div>
+            )}
+
+            {/* Error */}
+            {error && (
+              <div className="alert alert-danger">{error}</div>
+            )}
+
+            {/* Total Result */}
+            {total !== null && (
+              <div className="alert alert-success fs-5 fw-bold">
+                Total Cost: {total.toLocaleString()} UGX
+              </div>
+            )}
+
+            {/* Buttons */}
+            <div className="d-grid gap-2 mt-3">
+              <button
+                className="btn btn-success"
+                onClick={calculateTotal}
+              >
+                Calculate Total
+              </button>
+
+              <button
+                className="btn btn-primary"
+                onClick={() => alert("Proceed to confirmation & payment process.")}
+              >
+                Confirm Booking
+              </button>
+
+              <button
+                className="btn btn-outline-secondary"
+                onClick={() => setCurrentPage("customerDashboard")}
+              >
+                Back to Dashboard
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </motion.div>
   );
-};
-
+}
 // Main application component that manages state and "routing"
 const App = () => {
   // State to hold user information and their authentication token
@@ -1103,8 +1208,8 @@ const App = () => {
           <div className="container">
             <div className="row">
               <div className="col-md-6 mb-4 mb-md-0">
-                <h5><i className="bi bi-car-front-fill me-2"></i>RIDA UGANDA</h5>
-                <p>Your Trusted Driver. Anytime You Need One.</p>
+                <h5><i className="bi bi-car-front-fill me-2"></i>RIDA</h5>
+                <p>Your reliable ride booking service.</p>
               </div>
               <div className="col-md-3 mb-4 mb-md-0">
                 <h5>Quick Links</h5>
@@ -1117,12 +1222,12 @@ const App = () => {
               <div className="col-md-3">
                 <h5>Contact Us</h5>
                 <p><i className="bi bi-envelope me-2"></i> helpline@ridaapp.com</p>
-                <p><i className="bi bi-telephone me-2"></i> +256 770 493458</p>
+                <p><i className="bi bi-telephone me-2"></i> +(250) 789543687</p>
               </div>
             </div>
             <hr className="bg-white bg-opacity-25" />
             <div className="text-center">
-              <p className="mb-0">&copy; {new Date().getFullYear()} RIDA Uganda. All rights reserved.</p>
+              <p className="mb-0">&copy; {new Date().getFullYear()} RIDA. All rights reserved.</p>
             </div>
           </div>
         </motion.footer>
@@ -1803,7 +1908,7 @@ const HomePage = ({ setCurrentPage, theme }) => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            Your Trusted Driver. Anytime You Need One.
+            Welcome to RIDA
           </motion.h1>
           <motion.p 
             className="lead mb-3"
@@ -1811,7 +1916,7 @@ const HomePage = ({ setCurrentPage, theme }) => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            Safe. Professional. Reliable. <br/> Book a vetted driver in Kampala in minutes.
+            Your Car. Our Driver. Your Comfort & Safety.
           </motion.p>
           <motion.p
             className="mb-4"
@@ -1840,14 +1945,14 @@ const HomePage = ({ setCurrentPage, theme }) => {
             </motion.button>
             <motion.button 
               className="btn btn-outline-light btn-lg fw-semibold px-4"
-              
+              onClick={() => setCurrentPage('login')}
               whileHover={{ 
                 scale: 1.05,
                 boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.1)"
               }}
               whileTap={{ scale: 0.95 }}
             >
-              <i className="bi bi-box-arrow-in-right me-2"></i> Call or Whatsapp us at 0770493458
+              <i className="bi bi-box-arrow-in-right me-2"></i> Login
             </motion.button>
           </motion.div>
         </motion.div>
@@ -1863,10 +1968,10 @@ const HomePage = ({ setCurrentPage, theme }) => {
                 <div className="col-md-6 mb-4 mb-md-0">
                   <h3 className="card-title">We're not another ride service.</h3>
                   <p className="card-text">
-                    We're the service that gives you a driver for your own car or your journey. Founded and brought to you by  Ainembabazi Godwin
+                    We're the service that gives you a driver for your own car or your journey.
                   </p>
                   <p className="card-text">
-                    Need a safe driver after drinks, someone to take you out of town, a family driver, a driver for events and other occasions, or even a driver who doubles as a guide while visiting Uganda and Kampala?
+                    Need a safe driver after drinks, someone to take you out of town, a family driver, a driver for events and other occasions, or even a driver who doubles as a guide while visiting Uganda?
                   </p>
                   <p className="card-text">
                     That's exactly what we do.
@@ -2025,24 +2130,30 @@ const HomePage = ({ setCurrentPage, theme }) => {
                 { 
                   icon: 'bi-person-plus', 
                   title: 'Sign Up', 
-                  description: 'Create an account or log in to your existing account or even call us or Whatssapp us.',
+                  description: 'Create an account or log in to your existing account.',
                   color: 'primary'
                 },
                 { 
-                  icon: 'bi-map', 
-                  title: 'Share Details', 
-                  description: 'Tell us your location and time.',
+                  icon: 'bi-funnel', 
+                  title: 'Filter Drivers', 
+                  description: 'Use our advanced filtering system to find drivers that match your specific requirements.',
                   color: 'info'
                 },
                 { 
-                  icon: 'bi-check', 
-                  title: 'Get Matched', 
-                  description: 'We assign a vetted driver.',
+                  icon: 'bi-calendar-check', 
+                  title: 'Book Driver', 
+                  description: 'Select your preferred driver and provide trip details including pickup location, time, and destination.',
                   color: 'success'
                 },
                 { 
+                  icon: 'bi-car-front', 
+                  title: 'Enjoy Ride', 
+                  description: 'Your professional driver will arrive at the scheduled time and get you to your destination safely.',
+                  color: 'warning'
+                },
+                { 
                   icon: 'bi-cash-coin', 
-                  title: 'Pay & Go', 
+                  title: 'Pay & Rate', 
                   description: 'Pay the calculated fare and rate your experience to help us improve our service.',
                   color: 'danger'
                 }
@@ -2105,34 +2216,34 @@ const HomePage = ({ setCurrentPage, theme }) => {
       {/* 5. Why Choose Our Drivers Section */}
       <div className="row mb-5">
         <div className="col-12">
-          <h2 className="text-center mb-4">Why RIDA?</h2>
+          <h2 className="text-center mb-4">Why Choose Our Drivers</h2>
           <div className="row g-4">
             {[
               {
                 icon: 'bi-shield-check',
                 title: 'Verified Professionals',
-                description: 'Hiring a driver in Uganda should not feel risky.',
+                description: 'All our drivers undergo thorough background checks and vehicle inspections to ensure your safety.',
                 color: 'primary',
                 delay: 0.1
               },
               {
                 icon: 'bi-currency-dollar',
-                title: 'Clear Verification',
-                description: 'Verified identity and background checks.',
+                title: 'Transparent Pricing',
+                description: 'Competitive pricing with no hidden fees. Know exactly what you\'ll pay before booking.',
                 color: 'success',
                 delay: 0.3
               },
               {
                 icon: 'bi-clock-history',
                 title: '24/7 Availability',
-                description: 'Reliable and punctual service.',
+                description: 'Our service is available round the clock. Book a ride anytime, anywhere with our easy-to-use platform.',
                 color: 'info',
                 delay: 0.5
               },
               {
                 icon: 'bi-person-badge',
                 title: 'Experienced Drivers',
-                description: 'Professional conduct and confidentiality.',
+                description: 'Professional, courteous drivers who prioritize your comfort and punctuality.',
                 color: 'warning',
                 delay: 0.7
               }
@@ -2158,7 +2269,6 @@ const HomePage = ({ setCurrentPage, theme }) => {
                     <p className="card-text">{feature.description}</p>
                   </motion.div>
                 </AnimatedCard>
-                
               </div>
             ))}
           </div>
@@ -2167,8 +2277,8 @@ const HomePage = ({ setCurrentPage, theme }) => {
       
       {/* 6. Book Your Driver Now Section */}
       <div className="text-center py-5 mb-5">
-        <h2 className="mb-4">Ready to Book?</h2>
-        <p className="lead mb-4">Stop relying on random referrals. Choose a structured, trusted driver service.</p>
+        <h2 className="mb-4">Ready to Experience the Best Ride Service?</h2>
+        <p className="lead mb-4">Join thousands of satisfied customers who have made RIDA their preferred transportation partner.</p>
         <div className="d-flex flex-column flex-sm-row justify-content-center gap-3">
           <motion.button 
             className="btn btn-primary btn-lg fw-semibold px-4"
@@ -2192,11 +2302,126 @@ const HomePage = ({ setCurrentPage, theme }) => {
           >
             <i className="bi bi-box-arrow-in-right me-2"></i> Sign In
           </motion.button>
+        </div>
+      </div>
+      
+      {/* Testimonials Section */}
+      <div className="row mb-5">
+        <div className="col-12">
+          <h2 className="text-center mb-4">What Our Customers Say</h2>
+          <div className="row g-4">
+            <div className="col-md-4">
+              <motion.div 
+                className="card h-100 border-0 shadow-sm"
+                style={{ backgroundColor: colors.cardBg, border: `1px solid ${colors.border}` }}
+                whileHover={{ 
+                  y: -10,
+                  boxShadow: "0 10px 30px -15px rgba(0, 0, 0, 0.3)"
+                }}
+              >
+                <div className="card-body p-4">
+                  <div className="d-flex align-items-center mb-3">
+                    <div className="text-warning me-2">
+                      <i className="bi bi-star-fill"></i>
+                      <i className="bi bi-star-fill"></i>
+                      <i className="bi bi-star-fill"></i>
+                      <i className="bi bi-star-fill"></i>
+                      <i className="bi bi-star-fill"></i>
+                    </div>
+                    <span className="text-muted">5.0</span>
+                  </div>
+                  <p className="card-text">
+                    "After a late night out, I don't worry anymore. I know I'll get home safely as if am with my car."
+                  </p>
+                  <div className="d-flex align-items-center">
+                    <div className="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style={{width: '40px', height: '40px'}}>
+                      <span className="text-white fw-bold">Je</span>
+                    </div>
+                    <div>
+                      <h6 className="mb-0">Jean</h6>
+                      <small className="text-muted">Regular Customer</small>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+            <div className="col-md-4">
+              <motion.div 
+                className="card h-100 border-0 shadow-sm"
+                style={{ backgroundColor: colors.cardBg, border: `1px solid ${colors.border}` }}
+                whileHover={{ 
+                  y: -10,
+                  boxShadow: "0 10px 30px -15px rgba(0, 0, 0, 0.3)"
+                }}
+              >
+                <div className="card-body p-4">
+                  <div className="d-flex align-items-center mb-3">
+                    <div className="text-warning me-2">
+                      <i className="bi bi-star-fill"></i>
+                      <i className="bi bi-star-fill"></i>
+                      <i className="bi bi-star-fill"></i>
+                      <i className="bi bi-star-fill"></i>
+                      <i className="bi bi-star-fill"></i>
+                    </div>
+                    <span className="text-muted">5.0</span>
+                  </div>
+                  <p className="card-text">
+                    "We used the service for a family trip outside Kampala. The driver was professional and the pricing was so clear."
+                  </p>
+                  <div className="d-flex align-items-center">
+                    <div className="bg-success rounded-circle d-flex align-items-center justify-content-center me-3" style={{width: '40px', height: '40px'}}>
+                      <span className="text-white fw-bold">Al</span>
+                    </div>
+                    <div>
+                      <h6 className="mb-0">Alice</h6>
+                      <small className="text-muted">Long Trip Customer</small>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+            <div className="col-md-4">
+              <motion.div 
+                className="card h-100 border-0 shadow-sm"
+                style={{ backgroundColor: colors.cardBg, border: `1px solid ${colors.border}` }}
+                whileHover={{ 
+                  y: -10,
+                  boxShadow: "0 10px 30px -15px rgba(0, 0, 0, 0.3)"
+                }}
+              >
+                <div className="card-body p-4">
+                  <div className="d-flex align-items-center mb-3">
+                    <div className="text-warning me-2">
+                      <i className="bi bi-star-fill"></i>
+                      <i className="bi bi-star-fill"></i>
+                      <i className="bi bi-star-fill"></i>
+                      <i className="bi bi-star-fill"></i>
+                      <i className="bi bi-star-half"></i>
+                    </div>
+                    <span className="text-muted">4.5</span>
+                  </div>
+                  <p className="card-text">
+                    "The booking process is simple and straightforward. As a tourist, having a driver who also acted as a guide made all the difference."
+                  </p>
+                  <div className="d-flex align-items-center">
+                    <div className="bg-info rounded-circle d-flex align-items-center justify-content-center me-3" style={{width: '40px', height: '40px'}}>
+                      <span className="text-white fw-bold">Ma</span>
+                    </div>
+                    <div>
+                      <h6 className="mb-0">Maria</h6>
+                      <small className="text-muted">Tourist Traveller</small>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </div>
-    </div>
+        </div>
+      </div>
+    </motion.div>
   );
-}
-     
+};
+
 // Review Modal Component
 const ReviewModal = ({ show, onClose, booking, user, token, showMessage }) => {
   const [rating, setRating] = useState(5);
@@ -2622,7 +2847,7 @@ const CustomerDashboard = ({ user, token, showMessage, setCurrentPage, theme }) 
         driverId: selectedDriver._id,
         pickupLocation: {
           type: 'Point',
-          coordinates: [-1.9441, 30.0619], 
+          coordinates: [-1.9441, 30.0619], // Default coordinates for Kampala
           address: bookingData.pickupAddress
         },
         bookingType: 'once', // Default to one-time booking
@@ -2864,8 +3089,8 @@ const CustomerDashboard = ({ user, token, showMessage, setCurrentPage, theme }) 
                   style={{ backgroundColor: colors.background, color: colors.text, border: `1px solid ${colors.border}` }}
                 >
                   <option value="">Any Area</option>
-                  <option value="kampala">Kampala</option>
-                  <option value="outsideKampala">Outside Kampala</option>
+                  <option value="kigali">Kampala</option>
+                  <option value="outsideKigali">Outside Kampala</option>
                   <option value="nationwide">Nationwide</option>
                 </select>
               </div>
@@ -2914,6 +3139,7 @@ const CustomerDashboard = ({ user, token, showMessage, setCurrentPage, theme }) 
                 >
                   <option value="">Any Language</option>
                   <option value="english">English</option>
+                   <option value="swahili">Swahili</option>
                   <option value="french">French</option>
                 </select>
               </div>
@@ -3126,7 +3352,7 @@ const CustomerDashboard = ({ user, token, showMessage, setCurrentPage, theme }) 
                     {bookingData.days > 0 && (
                       <div className="mt-2 alert alert-info">
                         <i className="bi bi-info-circle me-2"></i>
-                        Estimated Fare: <strong>{bookingData.calculatedFare.toLocaleString()} RWF</strong>
+                        Estimated Fare: <strong>{bookingData.calculatedFare.toLocaleString()} UGX</strong>
                       </div>
                     )}
                   </div>
@@ -3175,6 +3401,7 @@ const CustomerDashboard = ({ user, token, showMessage, setCurrentPage, theme }) 
                       style={{ backgroundColor: colors.background, color: colors.text, border: `1px solid ${colors.border}` }}
                     >
                       <option value="english">English</option>
+                      <option value="Swahili">Swahili</option>
                       <option value="french">French</option>
                     </select>
                   </div>
@@ -3189,7 +3416,7 @@ const CustomerDashboard = ({ user, token, showMessage, setCurrentPage, theme }) 
                       readOnly
                       style={{ backgroundColor: colors.background, color: colors.text, border: `1px solid ${colors.border}` }}
                     />
-                    <small className="text-muted">Payment method is fixed to MomoPay Code with Flutterwave</small>
+                    <small className="text-muted">Payment method is fixed to MomoPay Code 123456</small>
                   </div>
                 </form>
               </div>
@@ -3974,7 +4201,7 @@ const Register = ({ onRegisterSuccess, showMessage, theme }) => {
     preferredServiceAreas: ['kampala'],
     timeAvailability: 'flexible',
     openToServices: ['shortTrips'],
-    languagesSpoken: ['english']
+    languagesSpoken: ['english', 'Swahili']
   });
   const [loading, setLoading] = useState(false);
   
@@ -4158,7 +4385,7 @@ const Register = ({ onRegisterSuccess, showMessage, theme }) => {
           >
             <option value="customer">Customer</option>
             <option value="driver">Driver</option>
-            
+            <option value="admin">Admin</option>
           </select>
         </div>
         
@@ -4341,7 +4568,7 @@ const Register = ({ onRegisterSuccess, showMessage, theme }) => {
             <div className="form-group mt-3">
               <label className="form-label fw-semibold">Preferred Service Areas</label>
               <div className="row g-2">
-                {['kampala', 'outsideKampala', 'nationwide'].map(area => (
+                {['kigali', 'outsideKigali', 'nationwide'].map(area => (
                   <div key={area} className="col-md-4">
                     <div className="form-check">
                       <input
@@ -4352,6 +4579,9 @@ const Register = ({ onRegisterSuccess, showMessage, theme }) => {
                         checked={formData.preferredServiceAreas.includes(area)}
                         onChange={(e) => handleArrayChange(e, 'preferredServiceAreas')}
                       />
+                      <label className="form-check-label" htmlFor={`area-${area}`}>
+                        {area === 'kigali' ? 'Kampala' : area === 'outsideKigali' ? 'Outside Kampala' : 'Nationwide'}
+                      </label>
                     </div>
                   </div>
                 ))}
@@ -4388,7 +4618,7 @@ const Register = ({ onRegisterSuccess, showMessage, theme }) => {
             <div className="form-group mt-3">
               <label className="form-label fw-semibold">Languages Spoken</label>
               <div className="row g-2">
-                {['english', 'french'].map(lang => (
+                {['english', 'swahili', 'french'].map(lang => (
                   <div key={lang} className="col-md-4">
                     <div className="form-check">
                       <input
