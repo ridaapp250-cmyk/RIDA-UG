@@ -1,9 +1,11 @@
-// middleware/adminAuth.js
 module.exports = (req, res, next) => {
-  // The auth middleware must run before this to populate req.user
-  if (req.user && req.user.userType === 'admin') {
-    next();
-  } else {
+  if (!req.user) {
+    return res.status(401).json({ msg: 'Not authenticated' });
+  }
+
+  if (req.user.userType !== 'admin') {
     return res.status(403).json({ msg: 'Authorization denied: Not an admin' });
   }
+
+  next();
 };
