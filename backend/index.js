@@ -55,8 +55,12 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.get('/', (req, res) => {
   res.json({ message: 'Driver Booking Platform API running' });
 });
-app.get('/admin/register', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'admin-register.html'));
+app.get('/admin/register', auth, (req, res) => {
+  if (req.user && req.user.userType === 'admin') {
+    res.sendFile(path.join(__dirname, 'public', 'admin-register.html'));
+  } else {
+    return res.status(403).json({ msg: 'Access denied. Admins only.' });
+  }
 });
 
 app.use('/api/auth', authRoutes || ((req, res) => res.status(500).json({ error: 'Auth routes failed to load' })));
