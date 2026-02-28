@@ -1221,7 +1221,7 @@ const App = () => {
               </div>
               <div className="col-md-3">
                 <h5>Contact Us</h5>
-                <p><i className="bi bi-envelope me-2"></i> helpline@ridaapp.com</p>
+                <p><i className="bi bi-envelope me-2"></i> ridaapp250@gmail.com</p>
                 <p><i className="bi bi-telephone me-2"></i> +(256) 770 493458</p>
               </div>
             </div>
