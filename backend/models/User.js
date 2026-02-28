@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
+// User Schema
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -21,7 +23,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a password'],
         minlength: [6, 'Password must be at least 6 characters'],
-        select: false
+        select: false // Don't return password in query results
     },
     phone: {
         type: String,
@@ -31,7 +33,7 @@ const UserSchema = new mongoose.Schema({
     userType: {
         type: String,
         enum: ['customer', 'driver', 'admin'],
-        default: 'customer'
+        default: 'customer' // Default user type is 'customer'
     },
     location: {
         type: String,
@@ -56,4 +58,20 @@ const UserSchema = new mongoose.Schema({
     timestamps: true
 });
 
+// Password hashing pre-save hook (for new users or password changes)
+UserSchema.pre('save', async function(next) {
+    if (!this.isModified('password')) return next();  // Only hash if the password is modified or new
+
+    // Hash the password
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();  // Proceed with saving the user
+});
+
+// Method to compare hashed password during login
+UserSchema.methods.comparePassword = async function(password) {
+    return await bcrypt.compare(password, this.password);  // Compare hashed password
+};
+
+// Export the model
 module.exports = mongoose.model('User', UserSchema);
