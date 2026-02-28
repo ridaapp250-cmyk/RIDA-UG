@@ -3089,8 +3089,8 @@ const CustomerDashboard = ({ user, token, showMessage, setCurrentPage, theme }) 
                   style={{ backgroundColor: colors.background, color: colors.text, border: `1px solid ${colors.border}` }}
                 >
                   <option value="">Any Area</option>
-                  <option value="kigali">Kampala</option>
-                  <option value="outsideKigali">Outside Kampala</option>
+                  <option value="kampala">Kampala</option>
+                  <option value="outsideKampala">Outside Kampala</option>
                   <option value="nationwide">Nationwide</option>
                 </select>
               </div>
@@ -4568,7 +4568,7 @@ const Register = ({ onRegisterSuccess, showMessage, theme }) => {
             <div className="form-group mt-3">
               <label className="form-label fw-semibold">Preferred Service Areas</label>
               <div className="row g-2">
-                {['kigali', 'outsideKigali', 'nationwide'].map(area => (
+                {['kampala', 'outsideKampala', 'nationwide'].map(area => (
                   <div key={area} className="col-md-4">
                     <div className="form-check">
                       <input
@@ -4580,7 +4580,7 @@ const Register = ({ onRegisterSuccess, showMessage, theme }) => {
                         onChange={(e) => handleArrayChange(e, 'preferredServiceAreas')}
                       />
                       <label className="form-check-label" htmlFor={`area-${area}`}>
-                        {area === 'kigali' ? 'Kampala' : area === 'outsideKigali' ? 'Outside Kampala' : 'Nationwide'}
+                        {area === 'kampala' ? 'Kampala' : area === 'outsideKampala' ? 'Outside Kampala' : 'Nationwide'}
                       </label>
                     </div>
                   </div>
