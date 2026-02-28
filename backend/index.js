@@ -57,83 +57,78 @@ app.get('/', (req, res) => {
   res.json({ message: 'Driver Booking Platform API running' });
 });
 app.get('/admin/register', (req, res) => {
-  res.send(`<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Registration</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container">
-        <h2 class="mt-5">Admin Registration</h2>
-        <form id="admin-register-form">
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" class="form-control" id="name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" class="form-control" id="password" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone:</label>
-                <input type="text" class="form-control" id="phone" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
-    </div>
-
-    <script>
-        document.getElementById('admin-register-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const formData = new FormData();
-            formData.append('name', document.getElementById('name').value);
-            formData.append('email', document.getElementById('email').value);
-            formData.append('password', document.getElementById('password').value);
-            formData.append('phone', document.getElementById('phone').value);
-
-            fetch('/api/admin/create-admin', {
-                method: 'POST',
-                body: formData
-            }).then(response => response.json())
-              .then(data => {
-                  if (data.msg) {
-                      alert(data.msg);
-                  } else if (data.errors) {
-                      alert('Error: ' + data.errors.map(err => err.msg).join(', '));
-                  }
-              })
-              .catch(err => alert('Error: ' + err.message));
-        });
-   const token = localStorage.getItem('token');
-
-fetch('/api/admin/create-admin', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`
-  },
-  body: JSON.stringify({
-    name,
-    email,
-    password,
-    phone
-  })
-})
-.then(res => res.json())
-.then(data => console.log(data));
-    </script>
-</body>
-</html>`);
+  res.send(
+    '<!DOCTYPE html>' +
+    '<html lang="en"><head>' +
+    '<meta charset="UTF-8">' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+    '<title>Admin Registration</title>' +
+    '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">' +
+    '<style>' +
+    'body { background: #f8f9fa; }' +
+    '.card { max-width: 480px; margin: 60px auto; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }' +
+    '.card-header { background: #4f46e5; color: white; border-radius: 10px 10px 0 0 !important; }' +
+    '#message { display: none; }' +
+    '</style></head><body>' +
+    '<div class="container">' +
+    '<div class="card">' +
+    '<div class="card-header text-center py-3"><h4 class="mb-0">Admin Registration</h4></div>' +
+    '<div class="card-body p-4">' +
+    '<div id="message" class="alert" role="alert"></div>' +
+    '<form id="admin-register-form">' +
+    '<div class="form-group"><label>Full Name</label><input type="text" class="form-control" id="name" placeholder="Enter full name" required></div>' +
+    '<div class="form-group"><label>Email</label><input type="email" class="form-control" id="email" placeholder="Enter email" required></div>' +
+    '<div class="form-group"><label>Password</label><input type="password" class="form-control" id="password" placeholder="Enter password" required></div>' +
+    '<div class="form-group"><label>Phone</label><input type="text" class="form-control" id="phone" placeholder="Enter phone number" required></div>' +
+    '<div class="form-group"><label>Admin Secret Key</label><input type="password" class="form-control" id="adminKey" placeholder="Enter admin secret key" required></div>' +
+    '<button type="submit" class="btn btn-primary btn-block" id="submitBtn">Register</button>' +
+    '</form></div></div></div>' +
+    '<script>' +
+    'document.getElementById("admin-register-form").addEventListener("submit", async function(event) {' +
+    'event.preventDefault();' +
+    'const name = document.getElementById("name").value;' +
+    'const email = document.getElementById("email").value;' +
+    'const password = document.getElementById("password").value;' +
+    'const phone = document.getElementById("phone").value;' +
+    'const adminKey = document.getElementById("adminKey").value;' +
+    'const msg = document.getElementById("message");' +
+    'const btn = document.getElementById("submitBtn");' +
+    'btn.disabled = true;' +
+    'btn.textContent = "Registering...";' +
+    'msg.style.display = "none";' +
+    'const token = localStorage.getItem("token");' +
+    'try {' +
+    'const res = await fetch("/api/admin/create-admin", {' +
+    'method: "POST",' +
+    'headers: Object.assign({ "Content-Type": "application/json" }, token ? { "Authorization": "Bearer " + token } : {}),' +
+    'body: JSON.stringify({ name, email, password, phone, adminKey })' +
+    '});' +
+    'const data = await res.json();' +
+    'if (res.ok) {' +
+    'msg.className = "alert alert-success";' +
+    'msg.textContent = data.msg || "Admin registered successfully!";' +
+    'this.reset();' +
+    '} else if (data.errors) {' +
+    'msg.className = "alert alert-danger";' +
+    'msg.textContent = "Error: " + data.errors.map(function(e) { return e.msg; }).join(", ");' +
+    '} else {' +
+    'msg.className = "alert alert-danger";' +
+    'msg.textContent = data.msg || data.message || "Registration failed.";' +
+    '}' +
+    'msg.style.display = "block";' +
+    '} catch(err) {' +
+    'msg.className = "alert alert-danger";' +
+    'msg.textContent = "Network error: " + err.message;' +
+    'msg.style.display = "block";' +
+    '} finally {' +
+    'btn.disabled = false;' +
+    'btn.textContent = "Register";' +
+    '}' +
+    '});' +
+    '<\/script>' +
+    '</body></html>'
+  );
 });
-
 app.use('/api/auth', authRoutes || ((req, res) => res.status(500).json({ error: 'Auth routes failed to load' })));
 app.use('/api/bookings', bookingRoutes || ((req, res) => res.status(500).json({ error: 'Booking routes failed to load' })));
 app.use('/api/drivers', driverRoutes || ((req, res) => res.status(500).json({ error: 'Driver routes failed to load' })));
