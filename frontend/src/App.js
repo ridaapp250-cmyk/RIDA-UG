@@ -1980,7 +1980,7 @@ const HomePage = ({ setCurrentPage, theme }) => {
                     Simple. Reliable. Professional.
                   </p>
                   <p className="card-text">
-                    Your driver, whenever you need one.
+                    Your driver, whenever you need one. Founded and brought to you by  _Ainembabazi Godwin
                   </p>
                 </div>
                 <div className="col-md-6 text-center">
