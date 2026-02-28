@@ -55,6 +55,9 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.get('/', (req, res) => {
   res.json({ message: 'Driver Booking Platform API running' });
 });
+app.get('/admin/register', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin-register.html'));
+});
 
 app.use('/api/auth', authRoutes || ((req, res) => res.status(500).json({ error: 'Auth routes failed to load' })));
 app.use('/api/bookings', bookingRoutes || ((req, res) => res.status(500).json({ error: 'Booking routes failed to load' })));
