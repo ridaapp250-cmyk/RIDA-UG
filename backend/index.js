@@ -57,7 +57,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'Driver Booking Platform API running' });
 });
 app.get('/admin/register', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'admin-register.html'));
+  res.sendFile(path.join(__dirname, 'public', 'adminRegister.html'));
 });
 
 app.use('/api/auth', authRoutes || ((req, res) => res.status(500).json({ error: 'Auth routes failed to load' })));
