@@ -3401,7 +3401,7 @@ const CustomerDashboard = ({ user, token, showMessage, setCurrentPage, theme }) 
                       style={{ backgroundColor: colors.background, color: colors.text, border: `1px solid ${colors.border}` }}
                     >
                       <option value="english">English</option>
-                      <option value="Swahili">Swahili</option>
+                      <option value="swahili">Swahili</option>
                       <option value="french">French</option>
                     </select>
                   </div>
@@ -4201,7 +4201,7 @@ const Register = ({ onRegisterSuccess, showMessage, theme }) => {
     preferredServiceAreas: ['kampala'],
     timeAvailability: 'flexible',
     openToServices: ['shortTrips'],
-    languagesSpoken: ['english', 'Swahili']
+    languagesSpoken: ['english', 'swahili']
   });
   const [loading, setLoading] = useState(false);
   
