@@ -57,7 +57,7 @@ const DriverSchema = new mongoose.Schema({
     }],
     preferredServiceAreas: [{
         type: String,
-        enum: ['kigali', 'outsideKigali', 'nationwide']
+        enum: ['kampala', 'outsideKampala', 'nationwide']
     }],
     timeAvailability: {
         type: String,
@@ -70,7 +70,7 @@ const DriverSchema = new mongoose.Schema({
     }],
     languagesSpoken: [{
         type: String,
-        enum: ['english', 'kinyarwanda', 'french']
+        enum: ['english', 'swahili', 'french']
     }],
     // Ratings and pricing
     ratings: {
