@@ -56,7 +56,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.get('/', (req, res) => {
   res.json({ message: 'Driver Booking Platform API running' });
 });
-app.get('/admin/register', auth, (req, res) => {
+app.get('/admin/register', (req, res) => {
   if (req.user && req.user.userType === 'admin') {
     res.sendFile(path.join(__dirname, 'public', 'admin-register.html'));
   } else {
