@@ -53,6 +53,23 @@
               })
               .catch(err => alert('Error: ' + err.message));
         });
+        const token = localStorage.getItem('token');
+
+if (!token) {
+  window.location.href = '/admin/login';
+}
+
+fetch('/api/auth/me', {
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+})
+.then(res => res.json())
+.then(data => {
+  if (data.userType !== 'admin') {
+    window.location.href = '/';
+  }
+});
     </script>
 </body>
 </html>
